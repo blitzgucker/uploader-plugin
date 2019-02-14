@@ -1,0 +1,47 @@
+.responsiv-uploader-fileupload.style-image-multi .upload-button {
+  display: block;
+  border: 2px dashed #BDC3C7;
+  background-clip: content-box;
+  background-color: #F9F9F9;
+  position: relative;
+  outline: none;
+  float: left;
+  width: 76px;
+  height: 76px;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-button .upload-button-icon {
+  color: #BDC3C7;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  left: 50%;
+  margin-top: -11px;
+  margin-left: -11px;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-button:hover {
+  border-color: #0181b9;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-button:hover .upload-button-icon {
+  color: #0181b9;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-files-container {
+  margin-left: 90px;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-files-container .upload-object .info .size .drag-handle {
+  float: right;
+  padding-right: 1rem;
+  font-size: 1.5em;
+  cursor: all-scroll;
+  visibility: hidden;
+  color: white;
+}
+
+.responsiv-uploader-fileupload.style-image-multi .upload-files-container .upload-object:hover .info .size .drag-handle {
+  visibility: visible;
+}

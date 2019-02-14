@@ -3,6 +3,8 @@
 use System\Models\File;
 use Cms\Classes\ComponentBase;
 use ApplicationException;
+use October\Rain\Support\Facades\Flash;
+use System\Classes\CombineAssets;
 
 class ImageUploader extends ComponentBase
 {
@@ -126,9 +128,19 @@ class ImageUploader extends ComponentBase
 
     public function onRun()
     {
-        $this->addCss('assets/css/uploader.css');
-        $this->addJs('assets/vendor/dropzone/dropzone.js');
-        $this->addJs('assets/js/uploader.js');
+        $assetsJs = [
+            '~/plugins/responsiv/uploader/assets/vendor/dropzone/dropzone.js',
+            '~/plugins/responsiv/uploader/assets/vendor/html5sortable/dist/html5sortable.js',
+            '~/plugins/responsiv/uploader/assets/vendor/fontawesome/js/all.min.js',
+            '~/plugins/responsiv/uploader/assets/js/sortable.js',
+            '~/plugins/responsiv/uploader/assets/js/uploader.js',
+        ];
+        $assetsCss = [
+            '~/plugins/responsiv/uploader/assets/css/uploader.css',
+            '~/plugins/responsiv/uploader/assets/css/extrastyles.css',
+        ];
+        $this->addCss(CombineAssets::combine($assetsCss, $this->assetPath));
+        $this->addJs(CombineAssets::combine($assetsJs, $this->assetPath));
 
         if ($result = $this->checkUploadAction()) {
             return $result;
@@ -222,4 +234,14 @@ class ImageUploader extends ComponentBase
         }
     }
 
+    public function onSortupdate() {
+        $reorderIds = post('sortedItems');
+        $position = 1;
+        foreach ($reorderIds as $id) {
+            $record = File::find($id);
+            $record->sort_order = $position;
+            $record->save();
+            $position++;
+        }
+    }
 }

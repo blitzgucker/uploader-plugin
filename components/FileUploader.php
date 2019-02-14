@@ -1,6 +1,5 @@
 <?php namespace Responsiv\Uploader\Components;
 
-use Input;
 use Cms\Classes\ComponentBase;
 use System\Models\File;
 use System\Classes\CombineAssets;
@@ -86,9 +85,19 @@ class FileUploader extends ComponentBase
 
     public function onRun()
     {
-        $this->addCss('assets/css/uploader.css');
-        $this->addJs('assets/vendor/dropzone/dropzone.js');
-        $this->addJs('assets/js/uploader.js');
+        $assetsJs = [
+            '~/plugins/responsiv/uploader/assets/vendor/dropzone/dropzone.js',
+            '~/plugins/responsiv/uploader/assets/vendor/html5sortable/dist/html5sortable.js',
+            '~/plugins/responsiv/uploader/assets/vendor/fontawesome/js/all.min.js',
+            '~/plugins/responsiv/uploader/assets/js/sortable.js',
+            '~/plugins/responsiv/uploader/assets/js/uploader.js',
+        ];
+        $assetsCss = [
+            '~/plugins/responsiv/uploader/assets/css/uploader.css',
+            '~/plugins/responsiv/uploader/assets/css/extrastyles.css',
+        ];
+        $this->addCss(CombineAssets::combine($assetsCss, $this->assetPath));
+        $this->addJs(CombineAssets::combine($assetsJs, $this->assetPath));
 
         if ($result = $this->checkUploadAction()) {
             return $result;
@@ -131,4 +140,16 @@ class FileUploader extends ComponentBase
         }
     }
 
+    public function onSortupdate() {
+        $post = post();
+        $reorderIds = post('sortedItems');
+        $position = 1;
+        foreach ($reorderIds as $id) {
+            $record = File::find($id);
+            $record->sort_order = $position;
+            $record->save();
+            $position++;
+        }
+        // Flash::success('Successfully re-ordered projects.');
+    }
 }
